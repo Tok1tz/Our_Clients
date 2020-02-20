@@ -34,12 +34,13 @@ class _ListaState extends State<Lista> {
     print('Se hizo un pedido al API...');
     Usuario User = Usuario();
     final http.Response respuesta = await http.get(
-        "https://randomuser.me/api?results=400");
+        "https://randomuser.me/api?results=50");
 
     //Fetch user data and update state.
     final Personas = json.decode(respuesta.body)['results'];
     Personas.forEach((Persona) => {
       User = Usuario(
+        Titulo: Persona['name']['title'],
         Nombre: Persona['name']['first'] + ' ' + Persona['name']['last'],
         Username: Persona['login']['username'],
         Email: _normalizeEmail(Persona['email']),

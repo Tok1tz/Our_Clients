@@ -71,7 +71,8 @@ class Cuerpo extends StatelessWidget {
                       final correo = Persona.Email;
                       final String msgSubject= 'An important message from Our Clients';
                       final String name = Persona.Nombre;
-                      final String msgBody = 'Hello $name. We are communicating to you via email to inform you of...';
+                      final String title = Persona.Titulo;
+                      final String msgBody = 'Hello $title $name. We are communicating to you via email to inform you of...';
                       launch('mailto:$correo?subject=$msgSubject&body=$msgBody');
                       },
                     onLongPress: () {
