@@ -1,5 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'Usuario.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Presentacion extends StatelessWidget {
   final Usuario Persona;
@@ -9,7 +13,6 @@ class Presentacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Our Clients',
       theme: ThemeData(
         primarySwatch: Colors.deepOrange,
       ),
@@ -28,6 +31,18 @@ class Cuerpo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    _launchMapsUrl(String pais) async {
+      final url = 'https://www.google.com/maps/search/?api=1&query=$pais';
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw 'Could not launch $url';
+      }
+
+      return Void;
+    }
+
     return SingleChildScrollView(
       child: Center(
               child: Column(
@@ -37,7 +52,7 @@ class Cuerpo extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, bottom: 30.0),
                     child: CircleAvatar(
-                        radius: 60,
+                        radius: 95,
                         backgroundImage: NetworkImage(Persona.ImagenLARGE)),
                   ),
                   Padding(
@@ -51,36 +66,29 @@ class Cuerpo extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
+                  OutlineButton(
+                    onPressed: () => launch('mailto:$Persona.Email'),
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(text: Persona.Email));
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Copied to clipboard!")));
+                      },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Icon(Icons.email, color: Colors.deepPurpleAccent),
                         SizedBox(width: 6.0),
-                        SelectableText(Persona.Email, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        Text(Persona.Email, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
+                  OutlineButton(
+                    onPressed: () {_launchMapsUrl(Persona.Pais);},
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Icon(Icons.location_on, color: Colors.red),
                         SizedBox(width: 6.0),
-                        SelectableText(Persona.Pais, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(Icons.location_city),
-                        SizedBox(width: 6.0),
-                        SelectableText(Persona.Estado, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        Text(Persona.Estado + ", " + Persona.Pais, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
                       ],
                     ),
                   ),
@@ -95,16 +103,22 @@ class Cuerpo extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
+                  OutlineButton(
+                    onPressed: () => launch('tel:$Persona.Telefono'),
+                    onLongPress: () {
+                      Clipboard.setData(ClipboardData(text: Persona.Telefono));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text("Copied to clipboard!"),
+                      ));
+                    },
                     child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Icon(Icons.phone, color: Colors.lightBlue),
-                        SizedBox(width: 6.0),
-                        SelectableText(Persona.Telefono, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
-                      ],
-                    ),
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Icon(Icons.phone, color: Colors.lightBlue),
+                          SizedBox(width: 6.0),
+                          Text(Persona.Telefono, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        ],
+                      ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(4.0),

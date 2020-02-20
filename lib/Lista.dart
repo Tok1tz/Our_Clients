@@ -40,6 +40,8 @@ class _ListaState extends State<Lista> {
         RegistradoFecha: Persona['registered']['date'].substring(0,10), //Se trunca para sacar la hora de registro
         RegistradoHace: Persona['registered']['age'],
         Estado: Persona['location']['state'],
+        Latitud: Persona['location']['coordinates']['latitude'].toString(),
+        Longitud: Persona['location']['coordinates']['longitude'].toString(),
         ImagenTHUMB: Persona['picture']['thumbnail'],
         ImagenMEDIUM: Persona['picture']['medium'],
         ImagenLARGE: Persona['picture']['large'],
