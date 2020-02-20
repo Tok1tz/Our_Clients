@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Usuario.dart';
@@ -50,24 +49,31 @@ class Cuerpo extends StatelessWidget {
                 //verticalDirection: VerticalDirection.up,
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0, bottom: 30.0),
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: CircleAvatar(
                         radius: 95,
                         backgroundImage: NetworkImage(Persona.ImagenLARGE)),
                   ),
+                  Divider(indent: 20.0, endIndent: 20.0),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Icon(Icons.person, color: Colors.green),
                         SizedBox(width: 6.0),
-                        SelectableText(Persona.Username, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        SelectableText(Persona.Username, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                       ],
                     ),
                   ),
                   OutlineButton(
-                    onPressed: () => launch('mailto:$Persona.Email'),
+                    onPressed: () {
+                      final correo = Persona.Email;
+                      final String msgSubject= 'An important message from Our Clients';
+                      final String name = Persona.Nombre;
+                      final String msgBody = 'Hello $name. We are communicating to you via email to inform you of...';
+                      launch('mailto:$correo?subject=$msgSubject&body=$msgBody');
+                      },
                     onLongPress: () {
                       Clipboard.setData(ClipboardData(text: Persona.Email));
                       Scaffold.of(context).showSnackBar(SnackBar(content: Text("Copied to clipboard!")));
@@ -77,7 +83,7 @@ class Cuerpo extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.email, color: Colors.deepPurpleAccent),
                         SizedBox(width: 6.0),
-                        Text(Persona.Email, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        Text(Persona.Email, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                       ],
                     ),
                   ),
@@ -88,23 +94,23 @@ class Cuerpo extends StatelessWidget {
                       children: <Widget>[
                         Icon(Icons.location_on, color: Colors.red),
                         SizedBox(width: 6.0),
-                        Text(Persona.Estado + ", " + Persona.Pais, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        Text(Persona.Estado + ", " + Persona.Pais, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Icon(Icons.cake, color: Colors.pink),
                         SizedBox(width: 6.0),
-                        SelectableText(Persona.Cumple + " (" + Persona.Edad.toString() + " years old)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        SelectableText(Persona.Cumple + " (" + Persona.Edad.toString() + " years old)", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                       ],
                     ),
                   ),
                   OutlineButton(
-                    onPressed: () => launch('tel:$Persona.Telefono'),
+                    onPressed: () { final numero = Persona.Telefono; launch('tel:$numero');},
                     onLongPress: () {
                       Clipboard.setData(ClipboardData(text: Persona.Telefono));
                       Scaffold.of(context).showSnackBar(SnackBar(
@@ -116,18 +122,18 @@ class Cuerpo extends StatelessWidget {
                         children: <Widget>[
                           Icon(Icons.phone, color: Colors.lightBlue),
                           SizedBox(width: 6.0),
-                          Text(Persona.Telefono, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                          Text(Persona.Telefono, style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                         ],
                       ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Icon(Icons.cloud_upload),
                         SizedBox(width: 6.0),
-                        SelectableText(Persona.RegistradoFecha + " (" + Persona.RegistradoHace.toString() + " years ago)", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0)),
+                        SelectableText(Persona.RegistradoFecha + " (" + Persona.RegistradoHace.toString() + " years ago)", style: TextStyle(fontWeight: FontWeight.normal, fontSize: 18.0)),
                       ],
                     ),
                   ),

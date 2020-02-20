@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -12,7 +13,7 @@ class Lista extends StatefulWidget {
 }
 
 class _ListaState extends State<Lista> {
-  final List<Usuario> Items = [];
+  List<Usuario> Items = [];
 
   @override
   void initState() {
@@ -20,19 +21,28 @@ class _ListaState extends State<Lista> {
     _getData();
   }
 
+  String _normalizeEmail(String Email){
+    //Takes the email provided by the API and replaces the '@example.com' with a random email domain.
+    final endIndex = Email.indexOf('@');
+    final RandomDomainNames = ['gmail.com', 'outlook.com', 'yahoo.com', 'aol.com', 'protonmail.com', 'icloud.com'];
+    String NewEmail = Email.substring(0, endIndex);
+    final _random = Random();
+    return NewEmail + '@' + RandomDomainNames[_random.nextInt(RandomDomainNames.length)];
+  }
+
   Future _getData() async {
-    print('esperando respuesta...');
+    print('Se hizo un pedido al API...');
     Usuario User = Usuario();
     final http.Response respuesta = await http.get(
         "https://randomuser.me/api?results=400");
-    print('respuesta: $respuesta');
 
+    //Fetch user data and update state.
     final Personas = json.decode(respuesta.body)['results'];
     Personas.forEach((Persona) => {
       User = Usuario(
         Nombre: Persona['name']['first'] + ' ' + Persona['name']['last'],
         Username: Persona['login']['username'],
-        Email: Persona['email'],
+        Email: _normalizeEmail(Persona['email']),
         Cumple: Persona['dob']['date'].substring(0,10), //Se trunca para sacar la hora del nacimiento
         Edad: Persona['dob']['age'],
         Telefono: Persona['cell'],
@@ -69,17 +79,17 @@ class _ListaState extends State<Lista> {
         leading: CircleAvatar(
             backgroundImage: NetworkImage(this.Items[index].ImagenTHUMB)
         ),
-        title: Text(this.Items[index].Nombre),
+        title: Text(this.Items[index].Nombre, style: TextStyle(fontSize: 19.0),),
         onLongPress: () {
           Scaffold.of(context).showSnackBar(
               SnackBar(elevation: 0.0,
-                backgroundColor: Colors.white70,
+                //backgroundColor: Colors.white70,
                 duration: Duration(seconds: 1),
                 content: Text(
-                  'Show more information about ${this.Items[index].Nombre}', style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black),),
+                  'Show more information about ${this.Items[index].Nombre}', style: TextStyle(fontWeight: FontWeight.normal),),
                    ));
         },
-        subtitle: Text(this.Items[index].Username),
+        subtitle: Text(this.Items[index].Username, style: TextStyle(fontSize: 17.0),),
         onTap: () {
           Navigator.push(
             context,

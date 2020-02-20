@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
-      appBar: AppBar(title: Text('Our Clients'), actions: <Widget>[IconButton(icon: Icon(Icons.filter_list), onPressed: () {},)],),
+      appBar: AppBar(title: Text('Our Clients'),),
       body: Lista(),
       )
     );
